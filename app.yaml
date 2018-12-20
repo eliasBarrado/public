@@ -1,1 +1,6 @@
 runtime: python37
+service: public
+manual_scaling:
+  instances: 1 
+
+
