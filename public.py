@@ -1,17 +1,17 @@
 import time
+import logging
 
-def getServerTime(k, unixtime=True):
+def getServerTime(k):
 	try:
 		response = k.query_public('Time')
+		logging.info(response)
 
 	except Exception as error:
+		logging.error(error)
 		time.sleep(2)
-		getServerTime(k)
-	
-	if(unixtime):
-		return response['result']['unixtime']
+		response = getServerTime(k)
 
-	return response['result']['rfc1123']
+	return response
 
 def getTickerInformation(k, pair):
 	try:
