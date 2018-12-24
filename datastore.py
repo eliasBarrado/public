@@ -1,7 +1,11 @@
 from google.cloud import datastore
 import time
+import configparser
 
-client = datastore.Client(project='')
+config = configparser.ConfigParser()
+config.read('config.txt')
+
+client = datastore.Client(project=config['project']['id'])
 
 def putTicker(ticker):
 	key    = client.key('Ticker', 'last')

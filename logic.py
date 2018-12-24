@@ -2,8 +2,12 @@ import time
 import krakenex
 import public
 import datastore
+import configparser
 
-k = krakenex.api.API()
+config = configparser.ConfigParser()
+config.read('config.txt')
+
+k = krakenex.api.API(config['public']['key'], config['public']['secret'])
 
 def run():
 	while(True):
