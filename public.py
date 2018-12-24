@@ -4,7 +4,6 @@ import logging
 def getServerTime(k):
 	try:
 		response = k.query_public('Time')
-		logging.info(response)
 
 	except Exception as error:
 		logging.error(error)
@@ -18,17 +17,19 @@ def getTickerInformation(k, pair):
 		response = k.query_public('Ticker', {'pair': pair})
 
 	except Exception as error:
+		logging.error(error)
 		time.sleep(2)
-		getTickerInformation(k, pair)
+		response = getTickerInformation(k, pair)
 
 	return response
 
-def getOHLCData(k, pair, interval=1, since=None):
+def getOHLC(k, pair, interval=1, since=None):
 	try:
 		response = k.query_public('OHLC', {'pair': pair, 'interval': interval, 'since': since})
 
 	except Exception as error:
+		logging.error(error)
 		time.sleep(2)
-		getOHLCData(k,pair,interval,since)
+		response = getOHLC(k,pair,interval,since)
 
 	return response
