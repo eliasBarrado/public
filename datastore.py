@@ -1,5 +1,6 @@
 from google.cloud import datastore
-import time
+
+"""
 import configparser
 
 config = configparser.ConfigParser()
@@ -22,3 +23,11 @@ def tickerToEntity(ticker, key):
 		entity[x] = ticker['result']['XXBTZUSD'][x]
 
 	return entity
+
+"""
+
+def getLastID():
+	return True
+
+def setLastID():
+	return True

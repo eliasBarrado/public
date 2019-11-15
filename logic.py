@@ -1,16 +1,18 @@
 import time
 import krakenex
 import public
-import datastore
 import configparser
+import datastore
 
-config = configparser.ConfigParser()
-config.read('config.txt')
+#config = configparser.ConfigParser()
+#config.read('config.txt')
 
-k = krakenex.api.API(config['public']['key'], config['public']['secret'])
+#k = krakenex.api.API(config['public']['key'], config['public']['secret'])
+k = krakenex.api.API()
 
 def run():
 	while(True):
+		"""
 		print('Querying server time to Kraken:')
 		serverTime = public.getServerTime(k)
 		print(serverTime)
@@ -21,10 +23,27 @@ def run():
 		if(verify(ticker)):
 			datastore.putTicker(ticker)
 
+		"""
+		print('Retrieving last ID stored in BigQuery from Datastore:')
+		
+		last = datastore.getLastID()
+		print('Last ID in Datastore is {}'.format(last))
 
-		print('Querying OHLC data to Kraken:')
-		ohlc = public.getOHLC(k,'XXBTZUSD')
-		print(ohlc)
+		print('Querying last OHLC data to Kraken:')
+		
+		ohlc = public.getOHLC(k,'XXBTZUSD',since=last)
+		print('OHLC from Kraken:\n', ohlc)
+
+		newLast = ohlc['result']['last']
+		print('Last ID from Kraken OHLC data is {}'.format(newLast))
+
+		if(last != newLast):
+			success = bigquery.storeOHLC(ohlc)
+			if(success):
+				datastore.setLastID()
+			    last = newLast
+
+
 
 		time.sleep(20)
 

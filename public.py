@@ -21,7 +21,9 @@ def getTickerInformation(k, pair):
 
 	return response
 
-def getOHLC(k, pair, interval=1, since=None):
+def getOHLC(k, pair, interval=5, since=None):
+	if(since != None):
+		since = str(since)
 	try:
 		response = k.query_public('OHLC', {'pair': pair, 'interval': interval, 'since': since})
 	except Exception as error:
@@ -30,3 +32,5 @@ def getOHLC(k, pair, interval=1, since=None):
 		response = getOHLC(k,pair,interval,since)
 
 	return response
+
+#def getLastsOHLC(k, pair,interval=5, since=None):
