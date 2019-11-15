@@ -44,7 +44,6 @@ def run():
 			    last = newLast
 
 
-
 		time.sleep(20)
 
 
