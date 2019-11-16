@@ -25,23 +25,25 @@ def run():
 
 		"""
 		print('Retrieving last ID stored in BigQuery from Datastore:')
-		
 		last = datastore.getLastID()
+
 		print('Last ID in Datastore is {}'.format(last))
 
 		print('Querying last OHLC data to Kraken:')
 		
 		ohlc = public.getOHLC(k,'XXBTZUSD',since=last)
+		'Note: the last entry in the OHLC array is for the current, not-yet-committed frame and will always be present, regardless of the value of "since"'
 		print('OHLC from Kraken:\n', ohlc)
 
 		newLast = ohlc['result']['last']
 		print('Last ID from Kraken OHLC data is {}'.format(newLast))
 
 		if(last != newLast):
-			success = bigquery.storeOHLC(ohlc)
+			success = True #bigquery.storeOHLC(ohlc)
 			if(success):
-				datastore.setLastID()
-			    last = newLast
+				last = newLast
+				datastore.setLastID(last)
+		print('==================================================================')				
 
 
 		time.sleep(20)

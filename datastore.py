@@ -1,6 +1,5 @@
 from google.cloud import datastore
 
-"""
 import configparser
 
 config = configparser.ConfigParser()
@@ -8,26 +7,22 @@ config.read('config.txt')
 
 client = datastore.Client(project=config['project']['id'])
 
-def putTicker(ticker):
-	key    = client.key('Ticker', 'last')
-	entity = tickerToEntity(ticker, key)
-	client.put(entity)
-
-	key    = client.key('Ticker', int(time.time()))
-	entity = tickerToEntity(ticker, key)
-	client.put(entity)
-
-def tickerToEntity(ticker, key):
-	entity = datastore.Entity(key=key)
-	for x in ticker['result']['XXBTZUSD']:
-		entity[x] = ticker['result']['XXBTZUSD'][x]
-
-	return entity
-
-"""
-
 def getLastID():
-	return True
+	key = client.key('Time', 'last')
+	lastID = client.get(key)
+	return lastID['id']
 
-def setLastID():
-	return True
+
+def setLastID(lastID):
+	key = client.key('Time', 'last')
+	entity = datastore.Entity(key=key)
+	entity.update({'id':lastID})
+	client.put(entity)
+
+	key = client.key('Time', lastID)
+	entity = datastore.Entity(key=key)
+	entity.update({'id':lastID})
+	client.put(entity)
+
+
+	
