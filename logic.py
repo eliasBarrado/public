@@ -3,6 +3,7 @@ import krakenex
 import public
 import configparser
 import datastore
+import bigquery
 
 #config = configparser.ConfigParser()
 #config.read('config.txt')
@@ -39,7 +40,7 @@ def run():
 		print('Last ID from Kraken OHLC data is {}'.format(newLast))
 
 		if(last != newLast):
-			success = True #bigquery.storeOHLC(ohlc)
+			success = bigquery.insertOHLC(ohlc)
 			if(success):
 				last = newLast
 				datastore.setLastID(last)
