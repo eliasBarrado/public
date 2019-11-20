@@ -12,15 +12,15 @@ table_id   = 'OHLC'
 table_ref  = client.dataset(dataset_id).table(table_id)
 table      = client.get_table(table_ref)  # API request
 
-def insertOHLC(ohlc):
+def insertOHLC(krakenOHLC):
+	rows_to_insert = krakenOHLC.getCommited()
+	errors = client.insert_rows(table, rows_to_insert)  # API request
+	print(errors)
 	return True
 """
 rows_to_insert = [
     (u'Phred Phlyntstone', 32),
     (u'Wylma Phlyntstone', 29),
 ]
-
-errors = client.insert_rows(table, rows_to_insert)  # API request
-
-assert errors == []
 """
+#assert errors == []

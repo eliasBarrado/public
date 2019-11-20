@@ -5,6 +5,8 @@ import configparser
 import datastore
 import bigquery
 
+from model import KrakenOHLC
+
 #config = configparser.ConfigParser()
 #config.read('config.txt')
 
@@ -32,17 +34,16 @@ def run():
 
 		print('Querying last OHLC data to Kraken:')
 		
-		ohlc = public.getOHLC(k,'XXBTZUSD',since=last)
+		krakenOHLC = KrakenOHLC.KrakenOHLC(public.getOHLC(k,'XXBTZUSD',since=last))
 		'Note: the last entry in the OHLC array is for the current, not-yet-committed frame and will always be present, regardless of the value of "since"'
-		print('OHLC from Kraken:\n', ohlc)
+		print('OHLC from Kraken:\n', krakenOHLC.getOriginal())
 
-		newLast = ohlc['result']['last']
-		print('Last ID from Kraken OHLC data is {}'.format(newLast))
+		print('Last ID from Kraken OHLC data is {}'.format(krakenOHLC.getLast()))
 
-		if(last != newLast):
-			success = bigquery.insertOHLC(ohlc)
+		if(last != krakenOHLC.getLast()):
+			success = bigquery.insertOHLC(krakenOHLC)
 			if(success):
-				last = newLast
+				last = krakenOHLC.getLast()
 				datastore.setLastID(last)
 		print('==================================================================')				
 
