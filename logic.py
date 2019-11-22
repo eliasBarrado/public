@@ -35,14 +35,13 @@ def run():
 		print('Querying last OHLC data to Kraken:')
 		
 		krakenOHLC = KrakenOHLC.KrakenOHLC(public.getOHLC(k,'XXBTZUSD',since=last))
-		'Note: the last entry in the OHLC array is for the current, not-yet-committed frame and will always be present, regardless of the value of "since"'
+		
 		print('OHLC from Kraken:\n', krakenOHLC.getOriginal())
 
 		print('Last ID from Kraken OHLC data is {}'.format(krakenOHLC.getLast()))
 
 		if(last != krakenOHLC.getLast()):
-			success = bigquery.insertOHLC(krakenOHLC)
-			if(success):
+			if(bigquery.insertOHLC(krakenOHLC)):
 				last = krakenOHLC.getLast()
 				datastore.setLastID(last)
 		print('==================================================================')				
@@ -51,9 +50,5 @@ def run():
 		time.sleep(20)
 
 
-def verify(ticker):
-	if(ticker['error'] != []):
-		return False
 
-	return True
 
