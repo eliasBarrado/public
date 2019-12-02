@@ -14,18 +14,7 @@ k = krakenex.api.API()
 
 def run():
 	while(True):
-		"""
-		print('Querying server time to Kraken:')
-		serverTime = public.getServerTime(k)
-		print(serverTime)
-
-		print('Querying ticker information to Kraken:')
-		ticker = public.getTickerInformation(k,'XXBTZUSD')
-		print(ticker)
-		if(verify(ticker)):
-			datastore.putTicker(ticker)
-
-		"""
+		
 		time.sleep(20)
 
 		print('Retrieving last ID stored in BigQuery from Datastore:')
