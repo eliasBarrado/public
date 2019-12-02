@@ -1,6 +1,5 @@
 import time
 import krakenex
-import public
 import configparser
 import datastore
 import bigquery
