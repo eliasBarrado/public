@@ -27,6 +27,8 @@ def run():
 			datastore.putTicker(ticker)
 
 		"""
+		time.sleep(20)
+
 		print('Retrieving last ID stored in BigQuery from Datastore:')
 		last = datastore.getLastID()
 
@@ -34,20 +36,23 @@ def run():
 
 		print('Querying last OHLC data to Kraken:')
 		
-		krakenOHLC = KrakenOHLC.KrakenOHLC(public.getOHLC(k,'XXBTZUSD',since=last))
+		krakenOHLC = KrakenOHLC.KrakenOHLC(k,'XXBTZUSD',since=last)
+
+		if(krakenOHLC.hasError()):
+			continue
 		
 		print('OHLC from Kraken:\n', krakenOHLC.getOriginal())
 
 		print('Last ID from Kraken OHLC data is {}'.format(krakenOHLC.getLast()))
-
+		"""
 		if(last != krakenOHLC.getLast()):
 			if(bigquery.insertOHLC(krakenOHLC)):
 				last = krakenOHLC.getLast()
 				datastore.setLastID(last)
 		print('==================================================================')				
+		"""
 
-
-		time.sleep(20)
+		
 
 
 
