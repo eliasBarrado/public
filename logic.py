@@ -44,13 +44,13 @@ def run():
 		print('OHLC from Kraken:\n', krakenOHLC.getOriginal())
 
 		print('Last ID from Kraken OHLC data is {}'.format(krakenOHLC.getLast()))
-		"""
+		
 		if(last != krakenOHLC.getLast()):
 			if(bigquery.insertOHLC(krakenOHLC)):
 				last = krakenOHLC.getLast()
 				datastore.setLastID(last)
 		print('==================================================================')				
-		"""
+		
 
 		
 

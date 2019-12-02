@@ -15,7 +15,6 @@ class KrakenOHLC:
 			logging.error(error)
 
 		
-
 	def getLast(self):
 		return self.last
 
