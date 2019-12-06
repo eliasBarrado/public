@@ -24,6 +24,9 @@ class KrakenOHLC:
 		except Exception as error:
 			return True
 
+	def getError(self):
+		return self.error
+
 	def getCommited(self):
 		commitedOHLC = [x for x in self.result['XXBTZUSD'] if x[0] <= self.last]
 		return commitedOHLC

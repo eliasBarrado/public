@@ -3,41 +3,46 @@ import krakenex
 import configparser
 import datastore
 import bigquery
-
+import log
 from model import KrakenOHLC
 
+logger = log.getLogger(__name__)
 #config = configparser.ConfigParser()
 #config.read('config.txt')
 
 #k = krakenex.api.API(config['public']['key'], config['public']['secret'])
 k = krakenex.api.API()
 
+
+
 def run():
 	while(True):
 		
 		time.sleep(20)
 
-		print('Retrieving last ID stored in BigQuery from Datastore:')
+		logger.info('Retrieving last ID stored in BigQuery from Datastore:')
 		last = datastore.getLastID()
 
-		print('Last ID in Datastore is {}'.format(last))
+		logger.info('Last ID in Datastore is {}'.format(last))
 
-		print('Querying last OHLC data to Kraken:')
+		logger.info('Querying last OHLC data to Kraken:')
 		
 		krakenOHLC = KrakenOHLC.KrakenOHLC(k,'XXBTZUSD',since=last)
 
 		if(krakenOHLC.hasError()):
+			logger.error(krakenOHLC.getError())
 			continue
 		
-		print('OHLC from Kraken:\n', krakenOHLC.getOriginal())
+		logger.info('OHLC from Kraken: {}\n'.format(krakenOHLC.getOriginal()))
 
-		print('Last ID from Kraken OHLC data is {}'.format(krakenOHLC.getLast()))
+		logger.info('Last ID from Kraken OHLC data is {}'.format(krakenOHLC.getLast()))
 		
 		if(last != krakenOHLC.getLast()):
 			if(bigquery.insertOHLC(krakenOHLC)):
 				last = krakenOHLC.getLast()
 				datastore.setLastID(last)
-		print('==================================================================')				
+		
+		logger.info('==================================================================')				
 		
 
 		

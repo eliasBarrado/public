@@ -1,11 +1,14 @@
 from flask import Flask
 import logic
+import log
+
+logger = log.getLogger(__name__)
 
 app = Flask(__name__)
 
 @app.route('/_ah/start')
 def start():
-	print('Call to /_ah/start')
+	logger.info('Call to /_ah/start')
 	logic.run()
 
   

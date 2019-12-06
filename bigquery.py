@@ -1,7 +1,9 @@
 from google.cloud import bigquery
 
 import configparser
-import logging
+import log
+
+logger = log.getLogger(__name__)
 
 config = configparser.ConfigParser()
 config.read('config.txt')
@@ -18,7 +20,7 @@ def insertOHLC(krakenOHLC):
 	errors = client.insert_rows(table, rows_to_insert)
 	
 	if(errors != []):
-		logging.error(errors)
+		logger.error(errors)
 		return False
 
 	return True
