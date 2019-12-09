@@ -12,8 +12,7 @@ class KrakenOHLC:
 			self.krakenOHLC = response
 
 		except Exception as error:
-			logging.error(error)
-
+			self.error = error
 		
 	def getLast(self):
 		return self.last
